@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Mar 16 15:26:02 2020
-
-@author: DrLC
-"""
 
 from dataset import CODECHEF
 from modifier import TokenModifier, InsModifier
