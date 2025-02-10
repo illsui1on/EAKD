@@ -29,7 +29,7 @@ adversarial examples. For details on using ALERT, please refer to "Natural Attac
 
 ## EAKD Tarining
 
-Once the data is prepared, we can proceed with the final EAKD training. For example, in the path /CodeT5/vulnerability_prediction/distill, we execute the following command to complete the model training:
+Once the data is prepared, we can proceed with the final EAKD training. For example, in the path /vulnerability_prediction/distill, we execute the following command to complete the model training:
 
 ```
 python3 distill.py \
