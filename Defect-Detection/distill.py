@@ -109,6 +109,26 @@ def evaluate(model, eval_dataloader):
         "eval_f1": float(f1)
     }
     return results
+def evaluate_robustness(model, adv_dataloader):
+    model.eval()
+    adv_predict_all = []
+    adv_labels_all = []
+    with torch.no_grad():
+        bar = tqdm(adv_dataloader, total=len(adv_dataloader))
+        bar.set_description("Robustness Evaluation")
+        for batch in bar:
+            texts = batch[0].to("cuda")
+            label = batch[1].to("cuda")
+            prob = model(texts)
+            prob = F.softmax(prob)
+            adv_predict_all.append(prob.cpu().numpy())
+            adv_labels_all.append(label.cpu().numpy())
+
+    adv_predict_all = np.concatenate(adv_predict_all, 0)
+    adv_labels_all = np.concatenate(adv_labels_all, 0)
+    adv_preds = adv_predict_all[:, 0] > 0.5
+    robust_acc = np.mean(adv_labels_all == adv_preds)
+    return robust_acc
 
 
 def main():
@@ -124,6 +144,8 @@ def main():
                              "Default to the model max input length for single sentence inputs (take into account special tokens).")
     parser.add_argument("--model_dir", default="./", type=str,
                         help="The output directory where the model predictions and checkpoints will be written.")
+    parser.add_argument("--adv_data_file", default=None, type=str,
+                        help="Adversarial examples data file for robustness evaluation.")
     parser.add_argument("--do_train", action="store_true",
                         help="Whether to run training.")
     parser.add_argument("--do_eval", action="store_true",
@@ -197,6 +219,19 @@ def main():
         train(args, model, train_dataloader, eval_dataloader)
 
     if args.do_eval:
+        if args.adv_data_file:
+            adv_dataset = DistilledDataset(args, args.vocab_size, args.adv_data_file, logger)
+            adv_sampler = SequentialSampler(adv_dataset)
+            adv_dataloader = DataLoader(
+                adv_dataset, 
+                sampler=adv_sampler, 
+                batch_size=args.eval_batch_size, 
+                num_workers=8, 
+                pin_memory=True
+            )
+        else:
+            adv_dataloader = None
+            
         model_dir = os.path.join(
             args.model_dir, args.size, args.choice, "model.bin")
         model.load_state_dict(torch.load(model_dir))
@@ -204,6 +239,9 @@ def main():
         eval_res = evaluate(model, eval_dataloader)
         logger.info("Acc: {0}, Precision: {1}, Recall: {2}, F1: {3}".format(
             eval_res["eval_acc"], eval_res["eval_precision"], eval_res["eval_recall"], eval_res["eval_f1"]))
+    if args.adv_data_file:
+        robust_acc = evaluate_robustness(model, adv_dataloader)
+        logger.info("Robust Acc: {0}".format(robust_acc))
 
 
 if __name__ == "__main__":
