@@ -27,7 +27,7 @@ RKD requires the collection of adversarial examples, and in this study, we chose
 adversarial examples. For details on using ALERT, please refer to "Natural Attack for Pre-trained Models of Code."
 
 
-## RKD Tarining
+## EAKD Tarining
 
 Once the data is prepared, we can proceed with the final EAKD training. For example, in the path /CodeT5/vulnerability_prediction/distill, we execute the following command to complete the model training:
 
