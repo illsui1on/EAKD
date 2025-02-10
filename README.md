@@ -11,8 +11,8 @@ cd parser
 bash build.sh
 ```
 
-## Yices Results
-To facilitate researchers to reproduce our experiments, we provide Yices' solution results for the model search space.:
+## KD Results
+To facilitate researchers to reproduce our experiments, we provide solution results for the model search space.:
 
 ```
 3MB:{'attention_heads': 8, 'hidden_dim': 96, 'intermediate_size': 64, 'n_layers': 12, 'vocab_size': 1000}
