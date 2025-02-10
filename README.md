@@ -1,6 +1,6 @@
 # EAKD
 
-This replication package contains the adversarial attack pre-trained model, Yices-guided model reduction, and source code for training.
+This replication package contains the adversarial attack pre-trained model, GA-guided model reduction, and source code for training.
 
 ## Environment configuration
 
