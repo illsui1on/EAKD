@@ -1,4 +1,4 @@
-# CodeAdv-X
+# AdvGen-X
 
 This replication package contains the adversarial attack pre-trained model, GA-guided model reduction, and source code for training.
 
@@ -23,13 +23,13 @@ To facilitate researchers to reproduce our experiments, we provide solution resu
  ```
  
 ## Dataset Collection
-CodeAdv-X requires the collection of adversarial examples, and in this study, we chose to use ALERT as the method for collecting 
+AdvGen-X requires the collection of adversarial examples, and in this study, we chose to use ALERT as the method for collecting 
 adversarial examples. For details on using ALERT, please refer to "Natural Attack for Pre-trained Models of Code."
 
 
-## CodeAdv-X Tarining
+## AdvGen-X Tarining
 
-Once the data is prepared, we can proceed with the final CodeAdv-X training. For example, in the path /vulnerability_prediction/distill, we execute the following command to complete the model training:
+Once the data is prepared, we can proceed with the final AdvGen-X training. For example, in the path /vulnerability_prediction/distill, we execute the following command to complete the model training:
 
 ```
 python3 distill.py \
